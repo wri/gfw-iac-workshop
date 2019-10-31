@@ -124,7 +124,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     target_origin_id = "s3Origin"
 
     lambda_function_association {
-      event_type = "origin-response"
+      event_type = "viewer-response"
       lambda_arn = "${aws_lambda_function.security_headers.qualified_arn}"
     }
 
