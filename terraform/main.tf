@@ -15,3 +15,22 @@ module "dynamic_api" {
 
   tags = {}
 }
+
+module "static_site" {
+  source = "./modules/cloudfront-s3-lambda-at-edge"
+
+  origin_bucket_name = "jokerjokerjoker"
+
+  cdn_price_class            = "PriceClass_All"
+  cdn_viewer_protocol_policy = "redirect-to-https"
+  cdn_min_ttl                = 0
+  cdn_default_ttl            = 60
+  cdn_max_ttl                = 86400
+
+  project     = "${var.project}"
+  environment = "${var.environment}"
+
+  tags = {
+    Application = "Test"
+  }
+}
