@@ -29,3 +29,9 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 *tfplan*
+
+# Lambda
+*.zip
+*.out
+terraform/lambda-functions/s3-rw-test/src/*
+!terraform/lambda-functions/s3-rw-test/src/s3-rw-test.py
