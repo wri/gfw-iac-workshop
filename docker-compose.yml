@@ -11,3 +11,4 @@ services:
       - GIT_COMMIT=${GIT_COMMIT:-latest}
       - GFW_IAC_WORKSHOP_DBEUG=1
     working_dir: /usr/local/src
+    entrypoint: bash
