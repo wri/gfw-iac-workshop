@@ -22,25 +22,25 @@ variable "cdn_price_class" {
 variable "cdn_viewer_protocol_policy" {
   default     = "redirect-to-https"
   type        = string
-  description = ""
+  description = "The protocol users can use to access the files in the origin. One of allow-all, https-only, or redirect-to-https."
 }
 
 variable "cdn_min_ttl" {
   default     = "0"
   type        = string
-  description = ""
+  description = "The minimum amount of time that you want objects to stay in CloudFront caches before CloudFront queries your origin."
 }
 
 variable "cdn_default_ttl" {
   default     = "60"
   type        = string
-  description = ""
+  description = "The default amount of time that an object is in a CloudFront cache before CloudFront forwards another request to your origin."
 }
 
 variable "cdn_max_ttl" {
   default     = "86400"
   type        = string
-  description = ""
+  description = "The maximum amount of time that an object is in a CloudFront cache before CloudFront forwards another request to your origin."
 }
 
 variable "tags" {
