@@ -30,8 +30,5 @@ override.tf.json
 # example: *tfplan*
 *tfplan*
 
-# Lambda
+# Lambda source code ZIP files
 *.zip
-*.out
-terraform/lambda-functions/s3-rw-test/src/*
-!terraform/lambda-functions/s3-rw-test/src/s3-rw-test.py
