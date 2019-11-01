@@ -48,12 +48,12 @@ data "aws_iam_policy_document" "lambda_edge_assume_role" {
   }
 }
 
-resource "aws_iam_role" "lambda_basic_exec" {
-  name               = "lambda${var.environment}${var.project}BasicExecRole"
+resource "aws_iam_role" "lambda_basic_exec_edge" {
+  name               = "lambda${var.environment}${var.project}EdgeBasicExecRole"
   assume_role_policy = data.aws_iam_policy_document.lambda_edge_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_edge_basic_exec" {
-  role       = aws_iam_role.lambda_basic_exec.name
+  role       = aws_iam_role.lambda_basic_exec_edge.name
   policy_arn = var.aws_lambda_basic_exec_role_policy_arn
 }

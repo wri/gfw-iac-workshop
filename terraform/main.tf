@@ -26,7 +26,7 @@ module "static_site" {
 
   lambda_function_filename         = data.archive_file.security_headers.output_path
   lambda_function_source_code_hash = data.archive_file.security_headers.output_base64sha256
-  lambda_iam_role_arn              = aws_iam_role.lambda_basic_exec.arn
+  lambda_iam_role_arn              = aws_iam_role.lambda_basic_exec_edge.arn
   lambda_function_handler          = "index.handler"
 
   cdn_origin_access_identity = aws_cloudfront_origin_access_identity.default.cloudfront_access_identity_path
