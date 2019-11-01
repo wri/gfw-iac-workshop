@@ -15,47 +15,47 @@ variable "name" {
 
 variable "region" {
   type        = string
-  description = ""
+  description = "A valid AWS region to house VPC resources."
 }
 
 variable "key_name" {
   type        = string
-  description = ""
+  description = "A key pair used to control login access to EC2 instances."
 }
 
 variable "cidr_block" {
   default     = "10.0.0.0/16"
   type        = string
-  description = ""
+  description = "The CIDR range for the entire VPC."
 }
 
 variable "public_subnet_cidr_blocks" {
   type        = "list"
   default     = ["10.0.0.0/24"]
-  description = ""
+  description = "A list of CIDR ranges for public subnets."
 }
 
 variable "private_subnet_cidr_blocks" {
   type        = "list"
   default     = ["10.0.1.0/24"]
-  description = ""
+  description = "A list of CIDR ranges for private subnets."
 }
 
 variable "availability_zones" {
   type        = "list"
   default     = ["us-east-1a"]
-  description = ""
+  description = "A list of availability zones for subnet placement."
 }
 
 variable "bastion_ami" {
   type        = string
-  description = ""
+  description = "An AMI ID for the bastion."
 }
 
 variable "bastion_instance_type" {
   default     = "t3.nano"
   type        = string
-  description = ""
+  description = "An instance type for the bastion."
 }
 
 variable "tags" {

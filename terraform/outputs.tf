@@ -10,5 +10,5 @@ output "cdn_endpoint" {
 
 output "bastion_hostname" {
   value       = module.vpc.bastion_hostname
-  description = ""
+  description = "Bastion hostname for SSH access."
 }
