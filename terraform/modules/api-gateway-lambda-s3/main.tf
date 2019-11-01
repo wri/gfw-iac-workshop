@@ -25,7 +25,7 @@ resource "aws_api_gateway_integration" "lambda" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.default.invoke_arn
+  uri                     = aws_lambda_function.api_handler.invoke_arn
 }
 
 resource "aws_api_gateway_method" "proxy_root" {
@@ -42,7 +42,7 @@ resource "aws_api_gateway_integration" "lambda_root" {
 
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.default.invoke_arn
+  uri                     = aws_lambda_function.api_handler.invoke_arn
 }
 
 resource "aws_api_gateway_deployment" "default" {
@@ -58,36 +58,37 @@ resource "aws_api_gateway_deployment" "default" {
 #
 # Lambda resources
 #
-resource "aws_lambda_function" "default" {
-  filename = "${var.lambda_function_filename}"
-
-  function_name = "func${var.environment}${var.name}"
-
-  handler     = var.lambda_function_handler
-  role        = aws_iam_role.default.arn
-  memory_size = 128
-  runtime     = "python3.7"
-  timeout     = 10
+resource "aws_lambda_function" "api_handler" {
+  function_name    = "func${var.environment}${var.name}"
+  filename         = var.lambda_function_filename
+  source_code_hash = var.lambda_function_source_code_hash
+  role             = var.lambda_iam_role_arn
+  runtime          = "python3.7"
+  handler          = var.lambda_function_handler
+  memory_size      = 128
+  timeout          = 5
+  publish          = true
 
   environment {
     variables = {
       ENVIRONMENT = var.environment
-      S3_BUCKET   = aws_s3_bucket.default.id
+      S3_BUCKET   = var.bucket_name
     }
   }
 
-  source_code_hash = filesha256(var.lambda_function_filename)
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
+  tags = merge(
+    {
+      "Project"     = var.project,
+      "Environment" = var.environment
+    },
+    var.tags
+  )
 }
 
-resource "aws_lambda_permission" "default" {
+resource "aws_lambda_permission" "api_gateway" {
   statement_id  = "perm${var.environment}${var.name}"
   action        = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_function.default.function_name}"
+  function_name = "${aws_lambda_function.api_handler.function_name}"
   principal     = "apigateway.amazonaws.com"
 
   # The "/*/*" portion grants access from any method on any resource within the
