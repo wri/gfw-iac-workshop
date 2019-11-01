@@ -3,43 +3,48 @@
 set -e
 
 if [[ -n "${GFW_IAC_WORKSHOP_DEBUG}" ]]; then
-    set -x
+	set -x
 fi
 
 function usage() {
-    echo -n \
-        "Usage: $(basename "$0") COMMAND OPTION[S]
+	echo -n \
+		"Usage: $(basename "$0") COMMAND OPTION[S]
 Execute Terraform subcommands.
 "
 }
 
 if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
-    if [ "${1:-}" = "--help" ]; then
-        usage
-    else
-        TERRAFORM_DIR="$(dirname "$0")/../terraform"
+	if [ "${1:-}" = "--help" ]; then
+		usage
+	else
+		TERRAFORM_DIR="$(dirname "$0")/../terraform"
 
-        pushd "${TERRAFORM_DIR}"
+		pushd "${TERRAFORM_DIR}"
 
-        case "${1}" in
-        plan)
-            # Clear stale modules, then re-initialize
-            rm -rf .terraform
-            terraform init
+		case "${1}" in
+		plan)
+			# Clear stale modules, then re-initialize
+			rm -rf .terraform
+			terraform init
 
-            terraform plan \
-                -var-file="gfw-iac-workshop.tfvars" \
-                -out="gfw-iac-workshop.tfplan"
-            ;;
-        apply)
-            terraform apply "gfw-iac-workshop.tfplan"
-            ;;
-        *)
-            echo "ERROR: I don't have support for that Terraform subcommand!"
-            exit 1
-            ;;
-        esac
+			terraform plan \
+				-var-file="gfw-iac-workshop.tfvars" \
+				-out="gfw-iac-workshop.tfplan"
+			;;
+		apply)
+			terraform apply "gfw-iac-workshop.tfplan"
+			;;
+		destroy)
+			terraform destroy \
+				-var-file="gfw-iac-workshop.tfvars" \
+				-auto-approve
+			;;
+		*)
+			echo "ERROR: I don't have support for that Terraform subcommand!"
+			exit 1
+			;;
+		esac
 
-        popd
-    fi
+		popd
+	fi
 fi
