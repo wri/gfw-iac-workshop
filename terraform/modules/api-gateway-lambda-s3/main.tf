@@ -1,40 +1,4 @@
 #
-# IAM resources
-#
-data "aws_iam_policy_document" "lambda_assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "default" {
-  name               = "lambda${var.environment}${var.name}"
-  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
-}
-
-resource "aws_iam_role_policy_attachment" "default_lambda_policy" {
-  role       = aws_iam_role.default.name
-  policy_arn = var.aws_lambda_service_role_policy_arn
-}
-
-resource "aws_iam_role_policy_attachment" "default_s3_policy" {
-  role       = aws_iam_role.default.name
-  policy_arn = var.aws_s3_policy_arn
-}
-
-#
 # API Gateway resources
 #
 resource "aws_api_gateway_rest_api" "default" {
@@ -129,17 +93,4 @@ resource "aws_lambda_permission" "default" {
   # The "/*/*" portion grants access from any method on any resource within the
   # API Gateway REST API.
   source_arn = "${aws_api_gateway_rest_api.default.execution_arn}/*/*"
-}
-
-#
-# S3 resources
-#
-resource "aws_s3_bucket" "default" {
-  bucket = "${lower(replace(var.project, " ", ""))}-${lower(var.environment)}-${lower(var.name)}-${var.aws_region}"
-  acl    = "private"
-
-  tags = {
-    Project     = var.project
-    Environment = var.environment
-  }
 }
