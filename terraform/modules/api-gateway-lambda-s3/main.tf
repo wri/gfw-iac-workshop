@@ -78,8 +78,8 @@ resource "aws_lambda_function" "api_handler" {
 
   tags = merge(
     {
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )

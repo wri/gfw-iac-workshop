@@ -14,8 +14,8 @@ resource "aws_lambda_function" "cdn_handler" {
 
   tags = merge(
     {
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -78,8 +78,8 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   tags = merge(
     {
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )

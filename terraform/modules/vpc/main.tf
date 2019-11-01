@@ -8,9 +8,9 @@ resource "aws_vpc" "default" {
 
   tags = merge(
     {
-      Name          = var.name,
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = var.name,
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -27,9 +27,9 @@ resource "aws_route_table" "private" {
 
   tags = merge(
     {
-      Name          = "PrivateRouteTable",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "PrivateRouteTable",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -48,9 +48,9 @@ resource "aws_route_table" "public" {
 
   tags = merge(
     {
-      Name          = "PublicRouteTable",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "PublicRouteTable",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -71,9 +71,9 @@ resource "aws_subnet" "private" {
 
   tags = merge(
     {
-      Name          = "PrivateSubnet",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "PrivateSubnet",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -89,9 +89,9 @@ resource "aws_subnet" "public" {
 
   tags = merge(
     {
-      Name          = "PublicSubnet",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "PublicSubnet",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -121,9 +121,9 @@ resource "aws_vpc_endpoint" "s3" {
 
   tags = merge(
     {
-      Name          = "endpointS3",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "endpointS3",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -148,9 +148,9 @@ resource "aws_nat_gateway" "default" {
 
   tags = merge(
     {
-      Name          = "gwNAT",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "gwNAT",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -164,9 +164,9 @@ resource "aws_security_group" "bastion" {
 
   tags = merge(
     {
-      Name          = "sgBastion",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "sgBastion",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
@@ -185,9 +185,9 @@ resource "aws_instance" "bastion" {
 
   tags = merge(
     {
-      Name          = "Bastion",
-      "Project"     = var.project,
-      "Environment" = var.environment
+      Name        = "Bastion",
+      Project     = var.project,
+      Environment = var.environment
     },
     var.tags
   )
