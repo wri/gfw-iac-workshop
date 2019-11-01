@@ -1,0 +1,17 @@
+module "dynamic_api" {
+  source = "./modules/api-gateway-lambda-s3"
+
+  name = "S3GetACL"
+
+  bucket_name = aws_s3_bucket.default.id
+
+  lambda_function_filename         = data.archive_file.get_bucket_acl.output_path
+  lambda_function_source_code_hash = data.archive_file.get_bucket_acl.output_base64sha256
+  lambda_iam_role_arn              = aws_iam_role.lambda_basic_exec_s3.arn
+  lambda_function_handler          = "index.handler"
+
+  project     = var.project
+  environment = var.environment
+
+  tags = {}
+}

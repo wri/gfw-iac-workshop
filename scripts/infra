@@ -24,7 +24,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
         case "${1}" in
         plan)
             # Clear stale modules, then re-initialize
-            rm -rf .terraform terraform.tfstate*
+            rm -rf .terraform
             terraform init
 
             terraform plan \
