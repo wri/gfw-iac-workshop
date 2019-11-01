@@ -1,5 +1,5 @@
 "use strict";
-exports.handler = (event, _, callback) => {
+exports.handler = (event, context, callback) => {
   try {
     const response = event.Records[0].cf.response;
     const headers = response.headers;
