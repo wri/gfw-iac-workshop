@@ -20,9 +20,13 @@ variable "bucket_name" {
 }
 
 variable "aws_lambda_basic_exec_role_policy_arn" {
-  default = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  default     = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  type        = string
+  description = "ARN to the canned AWSLambdaBasicExecutionRole policy."
 }
 
 variable "aws_s3_read_only_policy_arn" {
-  default = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  default     = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  type        = string
+  description = "ARN to the canned AmazonS3ReadOnlyAccess policy."
 }
