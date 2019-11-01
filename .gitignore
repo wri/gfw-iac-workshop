@@ -32,3 +32,6 @@ override.tf.json
 
 # Lambda source code ZIP files
 *.zip
+
+# EC2 PEM files
+*.pem

@@ -7,3 +7,8 @@ output "cdn_endpoint" {
   value       = "https://${module.static_site.cdn_endpoint}"
   description = "CloudFront endpoint responsible for fronting the contents of an S3 bucket."
 }
+
+output "bastion_hostname" {
+  value       = module.vpc.bastion_hostname
+  description = ""
+}
