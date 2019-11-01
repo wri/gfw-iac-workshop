@@ -23,7 +23,6 @@ variable "bucket_regional_domain_name" {
   description = "Bucket region-specific domain name."
 }
 
-
 variable "lambda_function_filename" {
   type        = string
   description = "Filename for the Lambda function code archive."
