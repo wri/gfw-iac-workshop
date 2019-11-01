@@ -9,7 +9,7 @@ output "public_subnet_ids" {
 }
 
 output "private_subnet_ids" {
-  value       = [aws_subnet.private.*.id]
+  value       = aws_subnet.private.*.id
   description = "A list of VPC private subnet IDs."
 }
 
