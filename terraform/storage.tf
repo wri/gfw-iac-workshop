@@ -14,14 +14,14 @@ data "aws_iam_policy_document" "s3_read_only" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.default.iam_arn}"]
+      identifiers = [aws_cloudfront_origin_access_identity.default.iam_arn]
     }
   }
 }
 
 resource "aws_s3_bucket_policy" "cdn_read_only" {
-  bucket = "${aws_s3_bucket.default.id}"
-  policy = "${data.aws_iam_policy_document.s3_read_only.json}"
+  bucket = aws_s3_bucket.default.id
+  policy = data.aws_iam_policy_document.s3_read_only.json
 }
 
 resource "aws_s3_bucket" "default" {
@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "default" {
 }
 
 resource "aws_s3_bucket_object" "index" {
-  bucket       = "${aws_s3_bucket.default.id}"
+  bucket       = aws_s3_bucket.default.id
   key          = "index.html"
   content      = "Hello, world."
   content_type = "text/html"
