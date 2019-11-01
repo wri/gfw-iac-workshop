@@ -49,7 +49,7 @@ variable "cdn_origin_access_identity" {
 }
 
 variable "cdn_price_class" {
-  default     = "PriceClass_All"
+  default     = "PriceClass_100"
   type        = string
   description = "The price class for this distribution. One of PriceClass_All, PriceClass_200, PriceClass_100."
 }
