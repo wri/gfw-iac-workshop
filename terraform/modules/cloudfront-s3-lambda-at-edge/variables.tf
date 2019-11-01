@@ -51,7 +51,7 @@ variable "cdn_origin_access_identity" {
 variable "cdn_price_class" {
   default     = "PriceClass_100"
   type        = string
-  description = "The price class for this distribution. One of PriceClass_All, PriceClass_200, PriceClass_100."
+  description = "The price class for this distribution. One of PriceClass_All, PriceClass_200, or PriceClass_100."
 }
 
 variable "cdn_viewer_protocol_policy" {
