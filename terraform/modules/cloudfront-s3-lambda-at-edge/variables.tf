@@ -1,16 +1,52 @@
 variable "project" {
   type        = string
-  description = "A project specific tag that will be applied to all resources that support them."
+  description = "A project namespace for the infrastructure."
 }
 
 variable "environment" {
   type        = string
-  description = "An environment specific tag that will be applied to all resources that support them."
+  description = "An environment namespace for the infrastructure."
 }
 
-variable "origin_bucket_name" {
+variable "name" {
   type        = string
-  description = "A name for the S3 bucket used as the CloudFront distribution origin."
+  description = "A name for the module instance."
+}
+
+variable "bucket_name" {
+  type        = string
+  description = "Bucket name used as the CloudFront distribution origin."
+}
+
+variable "bucket_regional_domain_name" {
+  type        = string
+  description = "Bucket region-specific domain name."
+}
+
+
+variable "lambda_function_filename" {
+  type        = string
+  description = "Filename for the Lambda function code archive."
+}
+
+variable "lambda_function_source_code_hash" {
+  type        = string
+  description = "Lambda function code archive hash."
+}
+
+variable "lambda_iam_role_arn" {
+  type        = string
+  description = "IAM role ARN to be assumed by the Lambda function."
+}
+
+variable "lambda_function_handler" {
+  type        = string
+  description = "Handler method for the Lambda function."
+}
+
+variable "cdn_origin_access_identity" {
+  type        = string
+  description = "Full path for the CloudFront origin access identity."
 }
 
 variable "cdn_price_class" {

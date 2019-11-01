@@ -1,112 +1,36 @@
 #
-# S3 resources
+# Lambda resources
 #
-data "aws_iam_policy_document" "s3_read_only" {
-  statement {
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
-    ]
-
-    resources = [
-      "${aws_s3_bucket.origin.arn}",
-      "${aws_s3_bucket.origin.arn}/*",
-    ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${aws_cloudfront_origin_access_identity.default.iam_arn}"]
-    }
-  }
-}
-
-resource "aws_s3_bucket_policy" "origin" {
-  bucket = "${aws_s3_bucket.origin.id}"
-  policy = "${data.aws_iam_policy_document.s3_read_only.json}"
-}
-
-resource "aws_s3_bucket" "origin" {
-  bucket = "${var.origin_bucket_name}"
-  acl    = "private"
+resource "aws_lambda_function" "cdn_handler" {
+  function_name    = "func${var.environment}${var.name}"
+  filename         = var.lambda_function_filename
+  source_code_hash = var.lambda_function_source_code_hash
+  role             = var.lambda_iam_role_arn
+  runtime          = "nodejs10.x"
+  handler          = var.lambda_function_handler
+  memory_size      = 128
+  timeout          = 3
+  publish          = true
 
   tags = merge(
     {
-      "Project"     = format("%s", var.project),
-      "Environment" = format("%s", var.environment)
+      "Project"     = var.project,
+      "Environment" = var.environment
     },
     var.tags
   )
 }
 
-resource "aws_s3_bucket_object" "index" {
-  bucket       = "${aws_s3_bucket.origin.id}"
-  key          = "index.html"
-  content      = "Hello, world."
-  content_type = "text/html"
-}
-
-#
-# IAM resources
-#
-data "aws_iam_policy_document" "lambda_edge_assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type = "Service"
-      identifiers = [
-        "lambda.amazonaws.com",
-        "edgelambda.amazonaws.com"
-      ]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "lambda_basic_exec" {
-  name               = "lambda${var.project}${var.environment}BasicExecutionRole"
-  assume_role_policy = "${data.aws_iam_policy_document.lambda_edge_assume_role.json}"
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic_exec" {
-  role       = "${aws_iam_role.lambda_basic_exec.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-#
-# Lambda resources
-#
-data "archive_file" "security_headers" {
-  type        = "zip"
-  source_dir  = "${path.module}/lambda-functions/security-headers/src"
-  output_path = "${path.module}/lambda-functions/security-headers.zip"
-}
-
-resource "aws_lambda_function" "security_headers" {
-  function_name    = "func${var.project}${var.environment}AddSecurityHeaders"
-  filename         = "${data.archive_file.security_headers.output_path}"
-  source_code_hash = "${data.archive_file.security_headers.output_base64sha256}"
-  role             = "${aws_iam_role.lambda_basic_exec.arn}"
-  runtime          = "nodejs10.x"
-  handler          = "index.handler"
-  memory_size      = 128
-  timeout          = 3
-  publish          = true
-}
-
 #
 # CloudFront resources
 #
-resource "aws_cloudfront_origin_access_identity" "default" {}
-
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name = "${aws_s3_bucket.origin.bucket_regional_domain_name}"
+    domain_name = var.bucket_regional_domain_name
     origin_id   = "s3Origin"
 
     s3_origin_config {
-      origin_access_identity = "${aws_cloudfront_origin_access_identity.default.cloudfront_access_identity_path}"
+      origin_access_identity = var.cdn_origin_access_identity
     }
   }
 
