@@ -40,7 +40,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   comment             = "Static Site (${var.project}, ${var.environment})"
   default_root_object = "index.html"
 
-  price_class = "${var.cdn_price_class}"
+  price_class = var.cdn_price_class
 
   default_cache_behavior {
     allowed_methods  = ["HEAD", "GET"]
@@ -49,7 +49,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 
     lambda_function_association {
       event_type = "viewer-response"
-      lambda_arn = "${aws_lambda_function.security_headers.qualified_arn}"
+      lambda_arn = aws_lambda_function.cdn_handler.qualified_arn
     }
 
     forwarded_values {
@@ -60,10 +60,10 @@ resource "aws_cloudfront_distribution" "cdn" {
       }
     }
 
-    viewer_protocol_policy = "${var.cdn_viewer_protocol_policy}"
-    min_ttl                = "${var.cdn_min_ttl}"
-    default_ttl            = "${var.cdn_default_ttl}"
-    max_ttl                = "${var.cdn_max_ttl}"
+    viewer_protocol_policy = var.cdn_viewer_protocol_policy
+    min_ttl                = var.cdn_min_ttl
+    default_ttl            = var.cdn_default_ttl
+    max_ttl                = var.cdn_max_ttl
   }
 
   restrictions {
@@ -78,8 +78,8 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   tags = merge(
     {
-      "Project"     = format("%s", var.project),
-      "Environment" = format("%s", var.environment)
+      "Project"     = var.project,
+      "Environment" = var.environment
     },
     var.tags
   )
