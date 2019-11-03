@@ -30,19 +30,19 @@ variable "cidr_block" {
 }
 
 variable "public_subnet_cidr_blocks" {
-  type        = "list"
+  type        = list
   default     = ["10.0.0.0/24"]
   description = "A list of CIDR ranges for public subnets."
 }
 
 variable "private_subnet_cidr_blocks" {
-  type        = "list"
+  type        = list
   default     = ["10.0.1.0/24"]
   description = "A list of CIDR ranges for private subnets."
 }
 
 variable "availability_zones" {
-  type        = "list"
+  type        = list
   default     = ["us-east-1a"]
   description = "A list of availability zones for subnet placement."
 }
