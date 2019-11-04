@@ -1,8 +1,6 @@
 module "dynamic_api" {
   source = "./modules/api-gateway-lambda-s3"
 
-  name = "S3GetACL"
-
   bucket_name = aws_s3_bucket.default.id
 
   lambda_function_filename         = data.archive_file.get_bucket_acl.output_path
@@ -18,8 +16,6 @@ module "dynamic_api" {
 
 module "static_site" {
   source = "./modules/cloudfront-s3-lambda-at-edge"
-
-  name = "AddSecurityHeader"
 
   bucket_name                 = aws_s3_bucket.default.id
   bucket_regional_domain_name = aws_s3_bucket.default.bucket_regional_domain_name
@@ -73,8 +69,6 @@ resource "aws_ecs_task_definition" "default" {
 
 module "fargate_api" {
   source = "./modules/api-gateway-fargate"
-
-  name = "HelloWorldRDS"
 
   vpc_id                 = module.vpc.id
   vpc_private_subnet_ids = module.vpc.private_subnet_ids

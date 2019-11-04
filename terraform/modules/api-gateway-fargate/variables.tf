@@ -8,11 +8,6 @@ variable "environment" {
   description = "An environment namespace for the infrastructure."
 }
 
-variable "name" {
-  type        = string
-  description = "A name for the module instance."
-}
-
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC for ECS resources."

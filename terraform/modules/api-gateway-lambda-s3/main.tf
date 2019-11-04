@@ -2,7 +2,7 @@
 # API Gateway resources
 #
 resource "aws_api_gateway_rest_api" "default" {
-  name = "api${var.environment}${var.name}"
+  name = "api${var.environment}${var.project}"
 }
 
 resource "aws_api_gateway_resource" "proxy" {
@@ -59,7 +59,7 @@ resource "aws_api_gateway_deployment" "default" {
 # Lambda resources
 #
 resource "aws_lambda_function" "api_handler" {
-  function_name    = "func${var.environment}${var.name}"
+  function_name    = "func${var.environment}${var.project}GetS3ACL"
   filename         = var.lambda_function_filename
   source_code_hash = var.lambda_function_source_code_hash
   role             = var.lambda_iam_role_arn
@@ -86,7 +86,7 @@ resource "aws_lambda_function" "api_handler" {
 }
 
 resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "perm${var.environment}${var.name}"
+  statement_id  = "perm${var.environment}${var.project}GetS3ACL"
   action        = "lambda:InvokeFunction"
   function_name = "${aws_lambda_function.api_handler.function_name}"
   principal     = "apigateway.amazonaws.com"

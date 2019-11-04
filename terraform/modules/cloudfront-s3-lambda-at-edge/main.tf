@@ -2,7 +2,7 @@
 # Lambda resources
 #
 resource "aws_lambda_function" "cdn_handler" {
-  function_name    = "func${var.environment}${var.name}"
+  function_name    = "func${var.environment}${var.project}AddHeaders"
   filename         = var.lambda_function_filename
   source_code_hash = var.lambda_function_source_code_hash
   role             = var.lambda_iam_role_arn

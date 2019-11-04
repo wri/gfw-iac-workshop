@@ -2,12 +2,12 @@
 # API Gateway resources
 #
 resource "aws_api_gateway_vpc_link" "default" {
-  name        = "link${var.environment}${var.name}"
+  name        = "link${var.environment}${var.project}"
   target_arns = [aws_lb.default.arn]
 }
 
 resource "aws_api_gateway_rest_api" "default" {
-  name = "api${var.environment}${var.name}"
+  name = "api${var.environment}${var.project}"
 }
 
 resource "aws_api_gateway_resource" "proxy" {
@@ -68,12 +68,12 @@ resource "aws_api_gateway_deployment" "default" {
 # Security Group Resources
 #
 resource "aws_security_group" "default" {
-  name   = "sgEcsService${var.environment}${var.name}"
+  name   = "sgEcsService${var.environment}${var.project}"
   vpc_id = var.vpc_id
 
   tags = merge(
     {
-      Name        = "sgEcsService${var.environment}${var.name}",
+      Name        = "sgEcsService${var.environment}${var.project}",
       Project     = var.project,
       Environment = var.environment
     },
@@ -123,7 +123,7 @@ resource "aws_security_group_rule" "nlb_http_ingress" {
 # NLB Resources
 #
 resource "aws_lb" "default" {
-  name                             = "nlb${var.environment}${var.name}"
+  name                             = "nlb${var.environment}${var.project}"
   internal                         = true
   load_balancer_type               = "network"
   enable_cross_zone_load_balancing = true
@@ -140,7 +140,7 @@ resource "aws_lb" "default" {
 }
 
 resource "aws_lb_target_group" "default" {
-  name = "tg${var.environment}${var.name}"
+  name = "tg${var.environment}${var.project}"
 
   health_check {
     protocol          = "TCP"
@@ -180,11 +180,11 @@ resource "aws_lb_listener" "default" {
 # ECS Resources
 #
 resource "aws_ecs_cluster" "default" {
-  name = "ecs${var.environment}${var.name}Cluster"
+  name = "ecs${var.environment}${var.project}Cluster"
 }
 
 resource "aws_ecs_service" "default" {
-  name            = "${var.environment}${var.name}"
+  name            = "${var.environment}${var.project}"
   cluster         = aws_ecs_cluster.default.id
   task_definition = var.task_definition_arn
 
@@ -214,6 +214,6 @@ resource "aws_ecs_service" "default" {
 # CloudWatch Resources
 #
 resource "aws_cloudwatch_log_group" "default" {
-  name              = "log${var.environment}${var.name}"
+  name              = "log${var.environment}${var.project}"
   retention_in_days = 30
 }

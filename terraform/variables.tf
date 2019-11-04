@@ -25,28 +25,33 @@ variable "bucket_name" {
 }
 
 variable "container_name" {
+  default     = "flask"
   type        = string
   description = "The name of the container to associate with the load balancer."
 }
 
 variable "container_port" {
+  default     = 5000
   type        = number
   description = "The port on the container to associate with the load balancer."
 }
 
 variable "rds_database_name" {
+  default     = "flask"
   type        = string
   description = "The name of the PostgreSQL database."
 
 }
 
 variable "rds_database_username" {
+  default     = "flask"
   type        = string
   description = "The username for the PostgreSQL database."
 
 }
 
 variable "rds_database_password" {
+  default     = "flask"
   type        = string
   description = "The password for the PostgreSQL database."
 }

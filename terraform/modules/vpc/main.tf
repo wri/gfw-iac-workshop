@@ -8,7 +8,7 @@ resource "aws_vpc" "default" {
 
   tags = merge(
     {
-      Name        = var.name,
+      Name        = join("", ["vpc", var.environment, var.project]),
       Project     = var.project,
       Environment = var.environment
     },

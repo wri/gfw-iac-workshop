@@ -8,11 +8,6 @@ variable "environment" {
   description = "An environment namespace for the infrastructure."
 }
 
-variable "name" {
-  type        = string
-  description = "A name for the module instance."
-}
-
 variable "bucket_name" {
   type        = string
   description = "Bucket name used as the CloudFront distribution origin."
