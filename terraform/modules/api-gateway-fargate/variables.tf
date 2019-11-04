@@ -19,11 +19,13 @@ variable "vpc_private_subnet_ids" {
 }
 
 variable "container_name" {
+  default     = "flask"
   type        = string
   description = "The name of the container to associate with the load balancer."
 }
 
 variable "container_port" {
+  default     = 5000
   type        = number
   description = "The port on the container to associate with the load balancer."
 }
