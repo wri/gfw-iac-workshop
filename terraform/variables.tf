@@ -51,7 +51,7 @@ variable "rds_database_username" {
 }
 
 variable "rds_database_password" {
-  default     = "flask"
+  default     = "flaskflask"
   type        = string
   description = "The password for the PostgreSQL database."
 }
