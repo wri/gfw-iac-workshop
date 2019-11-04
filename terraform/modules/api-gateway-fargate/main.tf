@@ -92,7 +92,7 @@ resource "aws_security_group_rule" "ecs_https_egress" {
   security_group_id = aws_security_group.default.id
 }
 
-data "aws_subnet" "public_subnet" {
+data "aws_subnet" "private_subnet" {
   count = length(var.vpc_private_subnet_ids)
   id    = var.vpc_private_subnet_ids[count.index]
 }
@@ -102,7 +102,7 @@ resource "aws_security_group_rule" "ecs_nlb_ingress" {
   from_port   = var.container_port
   to_port     = var.container_port
   protocol    = "tcp"
-  cidr_blocks = data.aws_subnet.public_subnet.*.cidr_block
+  cidr_blocks = data.aws_subnet.private_subnet.*.cidr_block
 
   security_group_id = aws_security_group.default.id
 }
