@@ -22,8 +22,6 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
             # is a docker login command with temporarily ECR credentials.
             eval "$(aws ecr get-login --no-include-email)"
 
-            docker build -t "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}/hello-world-rds:latest" \
-                src/hello_world_rds
             docker push "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}/hello-world-rds:latest"
         else
             echo "ERROR: No GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT variable defined."

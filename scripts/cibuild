@@ -1,0 +1,28 @@
+#!/bin/bash
+
+set -e
+
+if [[ -n "${GFW_IAC_WORKSHOP_DEBUG}" ]]; then
+	set -x
+fi
+
+function usage() {
+	echo -n \
+		"Usage: $(basename "$0")
+Build container images to Elastic Container Registry (ECR).
+"
+}
+
+if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
+	if [ "${1:-}" = "--help" ]; then
+		usage
+	else
+		if [[ -n "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}" ]]; then
+			docker build -t "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}/hello-world-rds:latest" \
+				src/hello_world_rds
+		else
+			echo "ERROR: No GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT variable defined."
+			exit 1
+		fi
+	fi
+fi
