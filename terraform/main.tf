@@ -1,4 +1,4 @@
-module "dynamic_api" {
+module "lambda_api" {
   source = "./modules/api-gateway-lambda-s3"
 
   bucket_name = aws_s3_bucket.default.id
