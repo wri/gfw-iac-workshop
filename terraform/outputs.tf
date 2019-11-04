@@ -13,11 +13,6 @@ output "bastion_hostname" {
   description = "Bastion hostname for SSH access."
 }
 
-output "ecr_registry_id" {
-  value       = aws_ecr_repository.default.registry_id
-  description = "Registry ID for the ECR repository."
-}
-
 output "fargate_api_endpoint" {
   value       = module.fargate_api.api_endpoint
   description = "API Gateway endpoint responsible for proxying requests to the ECS service."

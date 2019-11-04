@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "default" {
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/hello_world_rds.json.tmpl", {
-    image = "${aws_ecr_repository.default.repository_url}:latest"
+    image = "${var.ecr_repository_uri}:latest"
 
     container_name = var.container_name
     container_port = var.container_port

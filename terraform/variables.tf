@@ -24,6 +24,11 @@ variable "bucket_name" {
   description = "An S3 bucket to be created and used by the associated modules."
 }
 
+variable "ecr_repository_uri" {
+  type = string
+  description = "URI for the container image repository (e.g. aws_account_id.dkr.ecr.region.amazonaws.com/hello-repository)"
+}
+
 variable "container_name" {
   default     = "flask"
   type        = string
