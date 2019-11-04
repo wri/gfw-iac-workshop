@@ -41,3 +41,54 @@ module "static_site" {
 
   tags = {}
 }
+
+resource "aws_ecs_task_definition" "default" {
+  family                   = "${var.environment}${var.project}"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 256
+  memory                   = 512
+
+  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = templatefile("${path.module}/task-definitions/hello_world_rds.json.tmpl", {
+    image = "${aws_ecr_repository.default.repository_url}:latest"
+
+    container_name = var.container_name
+    container_port = var.container_port
+
+    postgres_name     = var.rds_database_name
+    postgres_username = var.rds_database_username
+    postgres_password = var.rds_database_password
+    postgres_host     = aws_db_instance.default.address
+    postgres_port     = aws_db_instance.default.port
+
+    project     = var.project
+    environment = var.environment
+    aws_region  = var.aws_region
+
+    log_group_name = "HelloWorldRDS"
+  })
+}
+
+module "fargate_api" {
+  source = "./modules/api-gateway-fargate"
+
+  name = "HelloWorldRDS"
+
+  vpc_id                 = module.vpc.id
+  vpc_private_subnet_ids = module.vpc.private_subnet_ids
+
+  container_name = var.container_name
+  container_port = var.container_port
+
+  task_definition_arn    = aws_ecs_task_definition.default.arn
+  desired_count          = 1
+  deployment_min_percent = 100
+  deployment_max_percent = 200
+
+  project     = var.project
+  environment = var.environment
+
+  tags = {}
+}

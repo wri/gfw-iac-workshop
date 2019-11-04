@@ -40,3 +40,10 @@ resource "aws_s3_bucket_object" "index" {
   content      = "Hello, world."
   content_type = "text/html"
 }
+
+#
+# ECR Resources
+#
+resource "aws_ecr_repository" "default" {
+  name = "hello-world-rds"
+}
