@@ -18,7 +18,7 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
 		usage
 	else
 		if [[ -n "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}" ]]; then
-			docker build -t "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}/hello-world-rds:latest" \
+			docker build -t "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}:latest" \
 				src/hello_world_rds
 		else
 			echo "ERROR: No GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT variable defined."
