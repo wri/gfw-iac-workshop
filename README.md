@@ -55,7 +55,7 @@ aws ecr create-repository --repository-name hello-repository
     "repository": {
         "repositoryArn": "arn:aws:ecr:us-east-1:942210422222:repository/hello-repository",
         "registryId": "942210422222",
-        "repositoryName": "hello-repository-joker",
+        "repositoryName": "hello-repository",
         "repositoryUri": "942210422222.dkr.ecr.us-east-1.amazonaws.com/hello-repository",
         "createdAt": 1572919870.0,
         "imageTagMutability": "MUTABLE",
