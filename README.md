@@ -2,12 +2,12 @@
 
 This repository contains the materials needed for exercises associated with a Terraform/Infrastructure as Code workshop for the World Resources Institute (WRI).
 
-## Table of contents
-
-- [Table of contents](#table-of-contents)
 - [Overview](#overview)
 - [Getting started](#getting-started)
+  - [Dependencies](#dependencies)
+  - [Instructions](#instructions)
 - [Gotchas](#gotchas)
+- [Amazon ECR Repository](#amazon-ecr-repository)
 
 ## Overview
 
@@ -22,46 +22,81 @@ The `src` directory contains a small Flask application for use with the `api-gat
 
 The `scripts` directory contains three scripts:
 
-- `cibuild` is responsible for building a Flask container image for the application in `src`
-- `cipublish` is responsible for publishing that container image to Amazon ECR
-- `infra` is a helper wrapper for the `terraform` command
+- `cibuild` is responsible for building a Flask container image for the application in `src`.
+- `cipublish` is responsible for publishing that container image to Amazon ECR.
+- `infra` is a wrapper for the `terraform` command that also manages initialization.
 
 ## Getting started
 
+### Dependencies
+
+- AWS CLI 1.16+
+- Docker 19.03+
+- Docker Compose 1.24+
+
+### Instructions
+
 First, copy the following file, renaming it to `gfw-iac-workshop.tfvars` in the process:
 
-```console
+```
 cp terraform/gfw-iac-workshop.tfvars.example terraform/gfw-iac-workshop.tfvars
 ```
 
 Then, customize its contents with a text editor:
 
-- For `project`, use your name in TitleCase.
+- For `project`, use your name in title case.
 - For `bucket_name`, use a unique name that is unlikely to collide with other bucket names in S3.
 - For `aws_key_name`, follow [these](https://docs.aws.amazon.com/en_pv/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair) instructions to generate a custom EC2 key pair for yourself. Assign the key pair name you select as the value for `aws_key_name`.
+- For `ecr_repository_uri`, create a repository with the AWS CLI and use the value for `repositoryUri` from the output:
 
-Here's an example:
+```
+export AWS_PROFILE=wri
+aws ecr create-repository --repository-name hello-repository
+{
+    "repository": {
+        "repositoryArn": "arn:aws:ecr:us-east-1:942210422222:repository/hello-repository",
+        "registryId": "942210422222",
+        "repositoryName": "hello-repository-joker",
+        "repositoryUri": "942210422222.dkr.ecr.us-east-1.amazonaws.com/hello-repository",
+        "createdAt": 1572919870.0,
+        "imageTagMutability": "MUTABLE",
+        "imageScanningConfiguration": {
+            "scanOnPush": false
+        }
+    }
+}
+```
+
+Here's an example of a customized `gfw-iac-workshop.tfvars`:
 
 ```
 project = "Peppa"
 environment = "Staging"
 bucket_name = "PeppaPig"
 aws_key_name = "wri-iac-workshop"
+ecr_repository_uri = "942210422222.dkr.ecr.region.amazonaws.com/hello-repository"
 ```
 
-Second, launch an instance of the included Terraform container image:
+Next, build a container image for the Flask application (`cibuild`), then publish it to Amazon ECR (`cipublish`):
 
-```console
+```
+export GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT="942210422222.dkr.ecr.us-east-1.amazonaws.com/hello-repository"
+./scripts/cibuild
+./scripts/cipublish
+```
+
+Lastly, launch an instance of the included Terraform container image:
+
+```
 docker-compose build
 docker-compose run --rm terraform
 bash-5.0#
 ```
 
-Next, build a container image for the Flask application and publish it to Amazon ECR using the following two commands:
+Once inside the context of the container image, use `infra` to generate a Terraform plan:
 
-```console
-./scripts/cibuild
-./scripts/cipublish
+```
+bash-5.0# ./scripts/infra plan
 ```
 
 ## Gotchas
