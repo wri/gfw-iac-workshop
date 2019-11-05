@@ -7,7 +7,6 @@ This repository contains the materials needed for exercises associated with a Te
   - [Dependencies](#dependencies)
   - [Instructions](#instructions)
 - [Gotchas](#gotchas)
-- [Amazon ECR Repository](#amazon-ecr-repository)
 
 ## Overview
 
@@ -104,46 +103,3 @@ bash-5.0# ./scripts/infra plan
 Lambda@Edge functions are replicated to CloudFront edge nodes to localize execution. This leads to an error when Terrafrom attempts to destroy the Lambda function associated with a distribution. In the short-term, the best workaround appears to be to wait for ~1 hour after a `destroy` attempt fails, then try again.
 
 See: https://github.com/terraform-providers/terraform-provider-aws/issues/1721
-
-## Amazon ECR Repository
-
-Amazon ECR is a managed Docker registry service from AWS. An Amazon ECR repository will need to be created to store the image for the Amazon Fargate demo.
-
-1. Create the repository. Note the `repositoryUri` in the output.
-
-```bash
-export AWS_PROFILE=wri
-aws ecr create-repository --repository-name hello-repository
-```
-
-Output:
-
-```
-{
-    "repository": {
-        "registryId": "aws_account_id",
-        "repositoryName": "hello-repository",
-        "repositoryArn": "arn:aws:ecr:region:aws_account_id:repository/hello-repository",
-        "createdAt": 1505337806.0,
-        "repositoryUri": "aws_account_id.dkr.ecr.region.amazonaws.com/hello-repository"
-    }
-}
-```
-
-2. Set `repositoryUri` as an environment variable for the current shell:
-
-```bash
-export GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT=aws_account_id.dkr.ecr.region.amazonaws.com/hello-repository
-```
-
-3. Build and publish the Amazon Fargate demo image:
-
-```bash
-./scripts/cipublish
-```
-
-4. Set `repositoryUri` as a Terraform variable:
-
-```bash
-echo "ecr_repository_uri = \"942210424858.dkr.ecr.us-east-1.amazonaws.com/hello-repository\"" >> terraform/gfw-iac-workshop.tfvars
-```
