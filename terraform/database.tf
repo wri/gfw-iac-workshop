@@ -43,4 +43,5 @@ resource "aws_db_instance" "default" {
   password               = var.rds_database_password
   parameter_group_name   = "default.postgres11"
   vpc_security_group_ids = [aws_security_group.postgresql.id]
+  skip_final_snapshot    = true
 }
