@@ -1,4 +1,4 @@
-output "api_endpoint" {
+output "lambda_api_endpoint" {
   value       = module.lambda_api.api_endpoint
   description = "API Gateway endpoint responsible for proxying requests to the Lambda function."
 }
