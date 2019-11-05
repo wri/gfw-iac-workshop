@@ -8,11 +8,6 @@ variable "environment" {
   description = "An environment namespace for the infrastructure."
 }
 
-variable "name" {
-  type        = string
-  description = "A name for the module instance."
-}
-
 variable "vpc_id" {
   type        = string
   description = "ID of the VPC for ECS resources."
@@ -24,11 +19,13 @@ variable "vpc_private_subnet_ids" {
 }
 
 variable "container_name" {
+  default     = "flask"
   type        = string
   description = "The name of the container to associate with the load balancer."
 }
 
 variable "container_port" {
+  default     = 5000
   type        = number
   description = "The port on the container to associate with the load balancer."
 }

@@ -8,11 +8,6 @@ variable "environment" {
   description = "An environment namespace for the infrastructure."
 }
 
-variable "name" {
-  type        = string
-  description = "A name for the module instance."
-}
-
 variable "bucket_name" {
   type        = string
   description = "Bucket name used as the CloudFront distribution origin."
@@ -61,20 +56,20 @@ variable "cdn_viewer_protocol_policy" {
 }
 
 variable "cdn_min_ttl" {
-  default     = "0"
-  type        = string
+  default     = 0
+  type        = number
   description = "The minimum amount of time that you want objects to stay in CloudFront caches before CloudFront queries your origin."
 }
 
 variable "cdn_default_ttl" {
-  default     = "60"
-  type        = string
+  default     = 60
+  type        = number
   description = "The default amount of time that an object is in a CloudFront cache before CloudFront forwards another request to your origin."
 }
 
 variable "cdn_max_ttl" {
-  default     = "86400"
-  type        = string
+  default     = 86400
+  type        = number
   description = "The maximum amount of time that an object is in a CloudFront cache before CloudFront forwards another request to your origin."
 }
 

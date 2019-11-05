@@ -8,7 +8,6 @@ services:
       - $HOME/.aws:/root/.aws:ro
     environment:
       - AWS_PROFILE
-      - GIT_COMMIT=${GIT_COMMIT:-latest}
       - GFW_IAC_WORKSHOP_DBEUG=1
       - GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT
     working_dir: /usr/local/src

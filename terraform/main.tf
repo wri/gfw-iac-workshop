@@ -1,7 +1,5 @@
-module "dynamic_api" {
+module "lambda_api" {
   source = "./modules/api-gateway-lambda-s3"
-
-  name = "S3GetACL"
 
   bucket_name = aws_s3_bucket.default.id
 
@@ -18,8 +16,6 @@ module "dynamic_api" {
 
 module "static_site" {
   source = "./modules/cloudfront-s3-lambda-at-edge"
-
-  name = "AddSecurityHeader"
 
   bucket_name                 = aws_s3_bucket.default.id
   bucket_regional_domain_name = aws_s3_bucket.default.bucket_regional_domain_name
@@ -52,7 +48,7 @@ resource "aws_ecs_task_definition" "default" {
   execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = templatefile("${path.module}/task-definitions/hello_world_rds.json.tmpl", {
-    image = "${aws_ecr_repository.default.repository_url}:latest"
+    image = "${var.ecr_repository_uri}:latest"
 
     container_name = var.container_name
     container_port = var.container_port
@@ -66,15 +62,11 @@ resource "aws_ecs_task_definition" "default" {
     project     = var.project
     environment = var.environment
     aws_region  = var.aws_region
-
-    log_group_name = "HelloWorldRDS"
   })
 }
 
 module "fargate_api" {
   source = "./modules/api-gateway-fargate"
-
-  name = "HelloWorldRDS"
 
   vpc_id                 = module.vpc.id
   vpc_private_subnet_ids = module.vpc.private_subnet_ids

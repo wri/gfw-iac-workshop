@@ -1,0 +1,5 @@
+project = "Peppa"
+environment = "Staging"
+bucket_name = "PeppaPig"
+aws_key_name = "wri-iac-workshop"
+ecr_repository_uri = "222222222222.dkr.ecr.us-east-1.amazonaws.com/hello-repository"

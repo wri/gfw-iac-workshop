@@ -9,7 +9,7 @@ fi
 function usage() {
 	echo -n \
 		"Usage: $(basename "$0")
-Publish container images to Elastic Container Registry (ECR).
+Build container images to Elastic Container Registry (ECR).
 "
 }
 
@@ -18,11 +18,8 @@ if [ "${BASH_SOURCE[0]}" = "${0}" ]; then
 		usage
 	else
 		if [[ -n "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}" ]]; then
-			# Evaluate the return value of the get-login subcommand, which
-			# is a docker login command with temporarily ECR credentials.
-			eval "$(aws ecr get-login --no-include-email)"
-
-			docker push "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}:latest"
+			docker build -t "${GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT}/hello-world-rds:latest" \
+				src/hello_world_rds
 		else
 			echo "ERROR: No GFW_IAC_WORKSHOP_AWS_ECR_ENDPOINT variable defined."
 			exit 1

@@ -1,5 +1,5 @@
-output "api_endpoint" {
-  value       = module.dynamic_api.api_endpoint
+output "lambda_api_endpoint" {
+  value       = module.lambda_api.api_endpoint
   description = "API Gateway endpoint responsible for proxying requests to the Lambda function."
 }
 
@@ -11,11 +11,6 @@ output "cdn_endpoint" {
 output "bastion_hostname" {
   value       = module.vpc.bastion_hostname
   description = "Bastion hostname for SSH access."
-}
-
-output "ecr_registry_id" {
-  value       = aws_ecr_repository.default.registry_id
-  description = "Registry ID for the ECR repository."
 }
 
 output "fargate_api_endpoint" {

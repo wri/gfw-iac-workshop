@@ -24,29 +24,39 @@ variable "bucket_name" {
   description = "An S3 bucket to be created and used by the associated modules."
 }
 
+variable "ecr_repository_uri" {
+  type = string
+  description = "URI for the container image repository (e.g. aws_account_id.dkr.ecr.region.amazonaws.com/hello-repository)"
+}
+
 variable "container_name" {
+  default     = "flask"
   type        = string
   description = "The name of the container to associate with the load balancer."
 }
 
 variable "container_port" {
+  default     = 5000
   type        = number
   description = "The port on the container to associate with the load balancer."
 }
 
 variable "rds_database_name" {
+  default     = "flask"
   type        = string
   description = "The name of the PostgreSQL database."
 
 }
 
 variable "rds_database_username" {
+  default     = "flask"
   type        = string
   description = "The username for the PostgreSQL database."
 
 }
 
 variable "rds_database_password" {
+  default     = "flaskflask"
   type        = string
   description = "The password for the PostgreSQL database."
 }
