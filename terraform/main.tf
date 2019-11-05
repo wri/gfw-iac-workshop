@@ -62,8 +62,6 @@ resource "aws_ecs_task_definition" "default" {
     project     = var.project
     environment = var.environment
     aws_region  = var.aws_region
-
-    log_group_name = "HelloWorldRDS"
   })
 }
 
